@@ -1,107 +1,231 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DISEASE DETECTION</title>
-    <style>
-        body {
-            background: linear-gradient(135deg, #6EE7B7, #3B82F6, #9333EA);
-            font-family: 'Poppins', sans-serif;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        h1 {
-            font-size: 2.8rem;
-            background: linear-gradient(to right, #fff, #F9FAFB, #FDE68A);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            animation: fadeInDown 1s ease;
-        }
-
-        form {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 20px 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        form:hover {
-            transform: scale(1.02);
-        }
-
-        input[type="file"] {
-            padding: 10px;
-            margin: 10px;
-            border: none;
-            background: rgba(255,255,255,0.8);
-            color: #111;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        button {
-            background: linear-gradient(90deg, #F472B6, #EC4899, #D946EF);
-            border: none;
-            color: white;
-            padding: 10px 25px;
-            border-radius: 15px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.4s ease;
-        }
-
-        button:hover {
-            background: linear-gradient(90deg, #8B5CF6, #3B82F6, #06B6D4);
-        }
-
-        .result-container {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        img {
-            border-radius: 20px;
-            border: 4px solid rgba(255,255,255,0.6);
-            max-width: 450px;
-            margin: 15px;
-            transition: transform 0.3s ease;
-        }
-
-        img:hover {
-            transform: scale(1.05);
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acne Detection AI - Advanced Skin Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>💫 DISEASE DETECTION 💫</h1>
+    <div class="background-animation"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Background -->
+                    <rect width="64" height="64" rx="12" fill="#0f172a"/>
+                    
+                    <!-- Corner Brackets (Framing) -->
+                    <path d="M12 12 L12 20 L16 20" stroke="#0891b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M52 12 L52 20 L48 20" stroke="#0891b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 52 L12 44 L16 44" stroke="#0891b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M52 52 L52 44 L48 44" stroke="#0891b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    
+                    <!-- Face Circle -->
+                    <circle cx="32" cy="32" r="18" fill="url(#purpleGradient)" opacity="0.95"/>
+                    <circle cx="32" cy="32" r="18" fill="none" stroke="url(#purpleBorderGradient)" stroke-width="2" opacity="0.8"/>
+                    
+                    <!-- Left Eye -->
+                    <ellipse cx="26" cy="28" rx="2.5" ry="3" fill="#1a1a1a" opacity="0.8"/>
+                    <circle cx="26" cy="28" r="1" fill="#ffffff" opacity="0.6"/>
+                    
+                    <!-- Right Eye -->
+                    <ellipse cx="38" cy="28" rx="2.5" ry="3" fill="#1a1a1a" opacity="0.8"/>
+                    <circle cx="38" cy="28" r="1" fill="#ffffff" opacity="0.6"/>
+                    
+                    <!-- Nose -->
+                    <ellipse cx="32" cy="34" rx="1.5" ry="2" fill="#1a1a1a" opacity="0.5"/>
+                    
+                    <!-- Mouth -->
+                    <path d="M26 40 Q32 44 38 40" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+                    
+                    <!-- Facial Recognition Grid Overlay -->
+                    <!-- Horizontal Grid Lines -->
+                    <line x1="18" y1="24" x2="46" y2="24" stroke="#0891b2" stroke-width="1" opacity="0.5" stroke-dasharray="2 2"/>
+                    <line x1="18" y1="32" x2="46" y2="32" stroke="#0891b2" stroke-width="1" opacity="0.5" stroke-dasharray="2 2"/>
+                    <line x1="18" y1="40" x2="46" y2="40" stroke="#0891b2" stroke-width="1" opacity="0.5" stroke-dasharray="2 2"/>
+                    
+                    <!-- Vertical Grid Lines -->
+                    <line x1="24" y1="18" x2="24" y2="46" stroke="#0891b2" stroke-width="1" opacity="0.5" stroke-dasharray="2 2"/>
+                    <line x1="32" y1="18" x2="32" y2="46" stroke="#0891b2" stroke-width="1" opacity="0.5" stroke-dasharray="2 2"/>
+                    <line x1="40" y1="18" x2="40" y2="46" stroke="#0891b2" stroke-width="1" opacity="0.5" stroke-dasharray="2 2"/>
+                    
+                    <!-- Detection Points (Acne) -->
+                    <circle cx="22" cy="26" r="2" fill="#ef4444" opacity="0.9">
+                        <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="42" cy="28" r="1.5" fill="#ef4444" opacity="0.8">
+                        <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+                    </circle>
+                    <circle cx="30" cy="38" r="1.5" fill="#ef4444" opacity="0.7">
+                        <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2s" repeatCount="indefinite" begin="1s"/>
+                    </circle>
+                    
+                    <!-- Scanning Bar (Animated) -->
+                    <rect x="14" y="22" width="36" height="6" fill="url(#scanGradient)" opacity="0.7">
+                        <animate attributeName="y" values="22;40;22" dur="3s" repeatCount="indefinite"/>
+                    </rect>
+                    <rect x="14" y="22" width="36" height="2" fill="#06b6d4" opacity="0.9">
+                        <animate attributeName="y" values="22;40;22" dur="3s" repeatCount="indefinite"/>
+                    </rect>
+                    
+                    <!-- Data Lines (Left) -->
+                    <line x1="18" y1="42" x2="20" y2="42" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/>
+                    <line x1="18" y1="45" x2="22" y2="45" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/>
+                    <circle cx="20" cy="48" r="1.5" fill="#10b981"/>
+                    <path d="M20 42 Q18 40 16 38" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7"/>
+                    
+                    <!-- Detection Indicators (Right) -->
+                    <rect x="44" y="42" width="3" height="3" fill="#ef4444" rx="0.5"/>
+                    <rect x="48" y="42" width="3" height="3" fill="#f59e0b" rx="0.5"/>
+                    <rect x="52" y="42" width="3" height="3" fill="#fbbf24" rx="0.5"/>
+                    <path d="M44 42 Q46 40 48 38" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7"/>
+                    
+                    <!-- Gradients -->
+                    <defs>
+                        <linearGradient id="skinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fcd34d;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="borderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.8" />
+                            <stop offset="100%" style="stop-color:#ec4899;stop-opacity:0.8" />
+                        </linearGradient>
+                        <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0891b2;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="scanGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.4" />
+                            <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0.1" />
+                        </linearGradient>
+                        <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#9333ea;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#7e22ce;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="purpleBorderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#c084fc;stop-opacity:0.9" />
+                            <stop offset="100%" style="stop-color:#a855f7;stop-opacity:0.9" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <h1 class="title">
+                <span class="title-main">Acne Detection AI</span>
+                <span class="title-subtitle">Advanced Skin Analysis System</span>
+            </h1>
+            <p class="description">Upload an image to detect and analyze acne lesions with AI-powered precision</p>
+        </header>
 
-    <form action="/predict" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*" required>
-        <button type="submit">🔍 Detect Disease</button>
-    </form>
+        <main class="main-content">
+            <div class="upload-section">
+                <form id="uploadForm" class="upload-form" enctype="multipart/form-data">
+                    <div class="upload-area" id="uploadArea">
+                        <input type="file" id="fileInput" name="file" accept="image/*" hidden>
+                        <div class="upload-content">
+                            <div class="upload-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M17 8L12 3L7 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="upload-title">Drag & Drop Your Image</h3>
+                            <p class="upload-text">or <span class="upload-link">browse</span> to choose a file</p>
+                            <p class="upload-hint">Supports JPG, PNG, WEBP (Max 10MB)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-section" id="previewSection" style="display: none;">
+                        <div class="preview-container">
+                            <div class="preview-image-wrapper">
+                                <img id="previewImage" src="" alt="Preview">
+                                <button type="button" class="remove-image" id="removeImage">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-    {% if result_image %}
-    <div class="result-container">
-        <h2>📸 Result:</h2>
-        <img src="{{ uploaded_image }}" alt="Uploaded Image">
-        <img src="{{ result_image }}" alt="Detected Result">
+                    <div class="action-buttons">
+                        <button type="submit" class="btn btn-primary" id="detectBtn" disabled>
+                            <span class="btn-text">Analyze Image</span>
+                            <span class="btn-loader" style="display: none;">
+                                <svg class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="32" stroke-dashoffset="32">
+                                        <animate attributeName="stroke-dasharray" dur="2s" values="0 32;16 16;0 32;0 32" repeatCount="indefinite"/>
+                                        <animate attributeName="stroke-dashoffset" dur="2s" values="0;-16;-32;-32" repeatCount="indefinite"/>
+                                    </circle>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2 class="results-title">Analysis Results</h2>
+                    <div class="results-stats" id="resultsStats"></div>
+                </div>
+                
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-card-header">
+                            <h3>Original Image</h3>
+                        </div>
+                        <div class="result-image-container">
+                            <img id="originalImage" src="" alt="Original Image">
+                        </div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-card-header">
+                            <h3>Detection Results</h3>
+                            <span class="badge" id="detectionBadge">Processing...</span>
+                        </div>
+                        <div class="result-image-container">
+                            <img id="resultImage" src="" alt="Detection Results">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button type="button" class="btn btn-secondary" id="analyzeAnother">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 4V10H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M23 20V14H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14L18.36 18.36A9 9 0 0 1 3.51 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Analyze Another Image
+                    </button>
+                </div>
+            </div>
+
+            <div class="error-message" id="errorMessage" style="display: none;">
+                <div class="error-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 8V12M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <p id="errorText">An error occurred. Please try again.</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Powered by YOLOv8 • Advanced AI Detection Technology</p>
+        </footer>
     </div>
-    {% endif %}
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
