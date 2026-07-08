@@ -1,7 +1,7 @@
 # Acne Detection Web App
 
 A deep learning-based web application that detects acne lesions from facial images using a YOLOv8 model.  
-Built with **Flask**, **Python**, and **OpenCV** — this app allows users to upload an image and get acne detection results directly in the browser.
+Built with **Flask**, **Python**, and̀ **OpenCV** — this app allows users to upload an image and get acne detection results directly in the browser.
 
 ---
 
